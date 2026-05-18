@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EnzoSanchesApp</string>
+
+    <string name="nome">Nome Completo</string>
+    <string name="email">E-mail</string>
+    <string name="senha">Senha</string>
+    <string name="cadastrar">Finalizar Cadastro</string>
+    <string name="login">Entrar</string>
+    <string name="criar_nova_conta">Não tem uma conta? Criar nova</string>
+    <string name="bem_vindo">Bem-vindo ao seu perfil!</string>
+    <string name="sair">Sair da Conta</string>
+</resources>

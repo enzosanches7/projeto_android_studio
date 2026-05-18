@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.EnzoSanches" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#00574B</item>
+        <item name="colorPrimaryVariant">#003D33</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">#008577</item>
+        <item name="colorSecondaryVariant">#00574B</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:statusBarColor">#003D33</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+</resources>
