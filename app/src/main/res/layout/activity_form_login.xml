@@ -22,7 +22,7 @@
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:src="@drawable/imepac_logo" />
 
         <EditText
             android:id="@+id/edtEmail"
