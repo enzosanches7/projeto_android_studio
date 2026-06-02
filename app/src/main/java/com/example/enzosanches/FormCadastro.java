@@ -81,7 +81,7 @@ public class FormCadastro extends AppCompatActivity {
                         Toast.makeText(FormCadastro.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
 
                         // Abre a sua TelaMenuPrincipalActivity
-                        Intent intent = new Intent(FormCadastro.this, TelaMenuPrincipalgit add ..class);
+                        Intent intent = new Intent(FormCadastro.this, TelaMenuPrincipal.class);
                         startActivity(intent);
                         finish();
                     } else {

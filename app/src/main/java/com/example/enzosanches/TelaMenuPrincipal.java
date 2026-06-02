@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-// Nome da classe igualzinho ao nome do arquivo físico
 public class TelaMenuPrincipal extends AppCompatActivity {
 
     private Button btnAdicionarPeca, btnListaDesejos, btnVerPerfil;
@@ -14,13 +13,26 @@ public class TelaMenuPrincipal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Deixado com o "2" no final para reconhecer seu layout com sucesso!
+        // Seu layout com o 2 no final para abrir certinho
         setContentView(R.layout.activity_tela_menu_principal2);
 
+        // Inicializando os botões da tela
         btnAdicionarPeca = findViewById(R.id.btnAdicionarPeca);
         btnListaDesejos = findViewById(R.id.btnListaDesejos);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
 
+        // Clique para abrir a tela de Adicionar Peça
+        if (btnAdicionarPeca != null) {
+            btnAdicionarPeca.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TelaMenuPrincipal.this, AdicionarPecaActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Clique para abrir a tela de Perfil
         if (btnVerPerfil != null) {
             btnVerPerfil.setOnClickListener(new View.OnClickListener() {
                 @Override
