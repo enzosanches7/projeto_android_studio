@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-// IMPORTAÇÃO DO FIREBASE (Necessária para o Logout)
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class TelaPerfil extends AppCompatActivity {
 
-    private TextView txtNomePerfil, txtEmailPerfil;
+    private TextView txtNomePerfil, txtEmailPerfil, btnVoltarPerfil;
     private Button btnSair;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,28 +24,44 @@ public class TelaPerfil extends AppCompatActivity {
 
         txtNomePerfil = findViewById(R.id.txtNomePerfil);
         txtEmailPerfil = findViewById(R.id.txtEmailPerfil);
+        btnVoltarPerfil = findViewById(R.id.btnVoltarPerfil);
         btnSair = findViewById(R.id.btnSair);
 
-        String nomeUsuario = getIntent().getStringExtra("nomeUsuario");
-        String emailUsuario = getIntent().getStringExtra("emailUsuario");
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
-        if (nomeUsuario != null && !nomeUsuario.isEmpty()) {
-            txtNomePerfil.setText(nomeUsuario);
-        }
+        // Clique para voltar ao Menu Principal
+        btnVoltarPerfil.setOnClickListener(v -> finish());
 
-        if (emailUsuario != null && !emailUsuario.isEmpty()) {
-            txtEmailPerfil.setText(emailUsuario);
+        FirebaseUser usuarioAtual = mAuth.getCurrentUser();
+        if (usuarioAtual != null) {
+            String uid = usuarioAtual.getUid();
+            String email = usuarioAtual.getEmail();
+
+            txtEmailPerfil.setText(email);
+
+            // Busca do Firestore o nome real salvo (Ex: crispim)
+            db.collection("Usuarios").document(uid)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String nome = documentSnapshot.getString("nome");
+                            if (nome != null && !nome.isEmpty()) {
+                                txtNomePerfil.setText(nome);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(TelaPerfil.this, "Erro ao carregar dados.", Toast.LENGTH_SHORT).show();
+                    });
         } else {
-            txtEmailPerfil.setText("Erro ao carregar email");
+            txtEmailPerfil.setText("Usuário não autenticado");
         }
 
         btnSair.setOnClickListener(v -> {
-            // CORREÇÃO: Faz o Logout (Sair da sessão) no Firebase
-            FirebaseAuth.getInstance().signOut();
-
-            // Volta para a tela de Login
+            mAuth.signOut();
             Intent intent = new Intent(TelaPerfil.this, FormLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         });
