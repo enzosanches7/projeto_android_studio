@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class AdicionarPecaActivity extends AppCompatActivity {
     private Button btnSalvarComponente;
     private TextView btnVoltarAdicionar;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth; // Adicionado para pegar o usuário logado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,10 @@ public class AdicionarPecaActivity extends AppCompatActivity {
         btnVoltarAdicionar = findViewById(R.id.btnVoltarAdicionar);
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance(); // Inicializa o Auth
 
-        // Clique para voltar ao Menu Principal
         btnVoltarAdicionar.setOnClickListener(v -> finish());
 
-        // Ação para salvar os dados no Firebase
         btnSalvarComponente.setOnClickListener(v -> {
             String nome = editNomePeca.getText().toString().trim();
             String categoria = editCategoriaPeca.getText().toString().trim();
@@ -44,16 +45,23 @@ public class AdicionarPecaActivity extends AppCompatActivity {
                 return;
             }
 
+            // Pega o ID do usuário atualmente logado
+            String userId = "";
+            if (mAuth.getCurrentUser() != null) {
+                userId = mAuth.getCurrentUser().getUid();
+            }
+
             Map<String, Object> peca = new HashMap<>();
             peca.put("nome", nome);
             peca.put("categoria", categoria);
             peca.put("preco", "R$ " + preco);
+            peca.put("userId", userId); // Salvando a peça vinculada ao ID do usuário!
 
             db.collection("pecas")
                     .add(peca)
                     .addOnSuccessListener(documentReference -> {
                         Toast.makeText(this, "Componente salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                        finish(); // Voltar automaticamente após salvar
+                        finish();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Erro ao salvar componente.", Toast.LENGTH_SHORT).show();
