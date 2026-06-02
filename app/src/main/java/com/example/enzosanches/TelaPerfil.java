@@ -7,7 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class TelaPerfil extends AppCompatActivity {
@@ -22,33 +22,43 @@ public class TelaPerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_perfil);
 
+        // Inicializa os componentes do layout
         txtNomePerfil = findViewById(R.id.txtNomePerfil);
         txtEmailPerfil = findViewById(R.id.txtEmailPerfil);
-        btnVoltarPerfil = findViewById(R.id.btnVoltarPerfil);
         btnSair = findViewById(R.id.btnSair);
+        btnVoltarPerfil = findViewById(R.id.btnVoltarPerfil);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Clique para voltar ao Menu Principal
+        // Ação do botão voltar
         btnVoltarPerfil.setOnClickListener(v -> finish());
 
-        FirebaseUser usuarioAtual = mAuth.getCurrentUser();
-        if (usuarioAtual != null) {
-            String uid = usuarioAtual.getUid();
-            String email = usuarioAtual.getEmail();
+        // Ação do botão sair da conta
+        btnSair.setOnClickListener(v -> {
+            mAuth.signOut();
+            Intent intent = new Intent(TelaPerfil.this, FormLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
 
-            txtEmailPerfil.setText(email);
+        carregarDadosUsuario();
+    }
 
-            // Busca do Firestore o nome real salvo (Ex: crispim)
-            db.collection("Usuarios").document(uid)
+    private void carregarDadosUsuario() {
+        if (mAuth.getCurrentUser() != null) {
+            String userId = mAuth.getCurrentUser().getUid();
+
+            db.collection("Usuarios").document(userId)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             String nome = documentSnapshot.getString("nome");
-                            if (nome != null && !nome.isEmpty()) {
-                                txtNomePerfil.setText(nome);
-                            }
+                            String email = mAuth.getCurrentUser().getEmail();
+
+                            txtNomePerfil.setText(nome);
+                            txtEmailPerfil.setText(email);
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -57,13 +67,5 @@ public class TelaPerfil extends AppCompatActivity {
         } else {
             txtEmailPerfil.setText("Usuário não autenticado");
         }
-
-        btnSair.setOnClickListener(v -> {
-            mAuth.signOut();
-            Intent intent = new Intent(TelaPerfil.this, FormLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
     }
 }

@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="#121212"
+    android:background="#1A1A1D"
     android:padding="24dp">
 
     <TextView
@@ -15,58 +14,73 @@
         android:textColor="#00FF66"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:padding="8dp"
-        android:layout_gravity="start"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="32dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seja Bem-vindo!"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#00FF66"
-        android:layout_marginBottom="32dp" />
-
-    <ImageView
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:background="@drawable/shape_circulo_perfil"
-        android:src="@drawable/ic_person"
-        android:scaleType="centerInside"
-        android:padding="24dp"
-        android:layout_marginBottom="24dp" />
-
-    <TextView
-        android:id="@+id/txtNomePerfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome da Pessoa"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/txtEmailPerfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="usuario@email.com"
-        android:textSize="16sp"
-        android:textColor="#888888" />
-
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seja Bem-vindo!"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#00FF66"
+            android:layout_marginBottom="32dp" />
+
+        <FrameLayout
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:background="@drawable/shape_circulo_perfil"
+            android:layout_marginBottom="24dp"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/imgFotoPerfil"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_hardware_profile" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/txtNomePerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="crispim"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/txtEmailPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="crispim123@gmail.com"
+            android:textSize="16sp"
+            android:textColor="#888888" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnSair"
-        style="@style/FormButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="16dp"
-        android:text="Sair da Conta" />
+        android:backgroundTint="#004D40"
+        android:textColor="#FFFFFF"
+        android:text="Sair da Conta"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:drawableLeft="@drawable/ic_power_sair"
+        android:drawablePadding="12dp"
+        android:paddingLeft="24dp" />
 
 </LinearLayout>
